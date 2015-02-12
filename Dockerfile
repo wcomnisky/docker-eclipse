@@ -23,7 +23,7 @@ WORKDIR $HOME
 
 # Install missing packages
 RUN sudo apt-get update
-RUN sudo apt-get install libswt-gtk-3-java unzip ant ant-contrib git meld -y
+RUN sudo apt-get install libswt-gtk-3-java unzip ant ant-contrib git -y
 
 ENV ECLIPSE_DOWNLOAD_URL http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/luna/SR1a/eclipse-rcp-luna-SR1a-linux-gtk-x86_64.tar.gz 
 # Download Eclipse for RCP and RAP developers
@@ -107,4 +107,3 @@ RUN curl -L  -o gradle.zip $GRADLE_DOWNLOAD_LINK && \
 #    $ECLIPSE_INSTALL_CALL_POSTFIX
 
 CMD $HOME/eclipse/eclipse
-
