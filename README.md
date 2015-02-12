@@ -10,7 +10,11 @@ This image is based on these blog entries
 
 Thanks to the authors :)
 
-## Plugins
+## What's installed?
+
+* Eclipse Lunar SR1 for RCP and RAP developers
+
+### Plugins
 
  * Findbugs
  * Checkstyle
@@ -19,7 +23,7 @@ Thanks to the authors :)
  * QuickREx
  * WicketShell
  
-## Tools (command line, use e.g. in wicket shell)
+### Tools (command line, use e.g. in wicket shell)
 
  * gradle
  * ant
