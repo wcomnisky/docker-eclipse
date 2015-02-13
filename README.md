@@ -46,5 +46,12 @@ Thanks to the authors :)
    
     # (optional: adjust UID, GUI and User in Dockerfile)
 
-    sudo docker build -t .
-    
+    sudo docker build -t eclipse-for-rcp .
+   
+    # run the image
+    sudo docker run -it -v ~/workspace/:/home/developer/workspace/ \
+        -e DISPLAY \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        eclipse-for-rcp
+
+     
