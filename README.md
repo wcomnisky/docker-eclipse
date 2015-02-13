@@ -21,7 +21,6 @@ Thanks to the authors :)
  * Database Viewer
  * Memory Analyzer
  * QuickREx
- * WicketShell
  
 ### Tools (command line, use e.g. in wicket shell)
 

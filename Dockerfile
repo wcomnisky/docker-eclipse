@@ -76,10 +76,6 @@ RUN  $ECLIPSE_DIR/run_p2.sh \
 # Install QuickREx (as dropin)
 RUN cd $ECLIPSE_DIR/dropins && curl -L -O http://sourceforge.net/projects/quickrex/files/latest/download/QuickREx_3.5.0.jar
 
-# Install WicketShell
-RUN $ECLIPSE_DIR/run_p2.sh \
-    -repository http://www.wickedshell.net/updatesite \
-    -installIUs net.sf.wickedshell.ui,net.sf.wickedshell.shell 
 
 # Install latest gradle
 ENV GRADLE_DOWNLOAD_LINK https://services.gradle.org/distributions/gradle-2.2.1-bin.zip
