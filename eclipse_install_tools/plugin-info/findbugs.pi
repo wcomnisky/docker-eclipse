@@ -1,0 +1,3 @@
+REPOSITORY="http://findbugs.cs.umd.edu/eclipse"
+FEATURES="edu.umd.cs.findbugs.plugin.eclipse"
+

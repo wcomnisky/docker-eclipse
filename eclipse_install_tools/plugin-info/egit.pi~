@@ -1,0 +1,2 @@
+-repository http://download.eclipse.org/releases/luna
+-installIUs org.eclipse.egit,org.eclipse.egit.core,org.eclipse.egit.ui,org.eclipse.jgit,org.eclipse.jgit.ui

@@ -1,0 +1,1 @@
+DROPIN_URL="http://sourceforge.net/projects/quickrex/files/latest/download/QuickREx_3.5.0.jar"

@@ -24,10 +24,10 @@ Thanks to the authors :)
  
 ### Tools (command line, use e.g. in wicket shell)
 
+ * Oracle JDKs 6,7 and 8
  * gradle
  * ant
  * git
- * meld
 
 ## Download and run it 
 

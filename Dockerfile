@@ -1,4 +1,4 @@
-FROM dockerfile/java:oracle-java8
+FROM ubuntu
 
 MAINTAINER Joerg Matysiak
 
@@ -22,88 +22,45 @@ ENV HOME /home/$USERNAME
 WORKDIR $HOME
 
 # Install missing packages
-RUN sudo apt-get update
-RUN sudo apt-get install libswt-gtk-3-java unzip ant ant-contrib git bash-completion -y
+RUN sudo apt-get update && \
+    sudo apt-get install libswt-gtk-3-java unzip ant ant-contrib git bash-completion curl software-properties-common -y
 
-ENV ECLIPSE_DIR /opt/eclipse
-
-ENV ECLIPSE_DOWNLOAD_URL http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/luna/SR1a/eclipse-rcp-luna-SR1a-linux-gtk-x86_64.tar.gz 
-# Download Eclipse for RCP and RAP developers
-RUN sudo mkdir -p $(dirname $ECLIPSE_DIR) && \
-    sudo chown $USERNAME:$USERNAME $(dirname $ECLIPSE_DIR) && \
-    cd $(dirname $ECLIPSE_DIR) && curl $ECLIPSE_DOWNLOAD_URL | tar -xvz
-
-# Fix Eclipse Classcast Exception at startup
-# see http://stackoverflow.com/questions/26279570/getting-rid-of-org-eclipse-osgi-internal-framework-equinoxconfiguration1-that-c
-#
-RUN echo "-Dosgi.configuration.area.default=null" >> $ECLIPSE_DIR/eclipse.ini && \
-    echo "-Dosgi.user.area.default=null" >> $ECLIPSE_DIR/eclipse.ini && \
-    echo "-Dosgi.user.area=@user.home" >> $ECLIPSE_DIR/eclipse.ini &&\
-    echo "-Dosgi.instance.area.default=null" >> $ECLIPSE_DIR/eclipse.ini
-
-# Remove MaxPermSize parameter from eclipse.ini. 
-# (This parameter is no longer supported with Java 8)
-RUN grep -v -e "MaxPermSize" -e "256m" $ECLIPSE_DIR/eclipse.ini > $ECLIPSE_DIR/eclipse.ini.new; mv $ECLIPSE_DIR/eclipse.ini.new $ECLIPSE_DIR/eclipse.ini 
-
-ADD run_p2.sh  $ECLIPSE_DIR/run_p2.sh
-RUN sudo chown $USERNAME:$USERNAME $ECLIPSE_DIR/run_p2.sh; chmod 755 $ECLIPSE_DIR/run_p2.sh
-
-# Install EGit
-RUN $ECLIPSE_DIR/run_p2.sh \
-    -repository http://download.eclipse.org/egit/updates \
-    -installIUs org.eclipse.egit,org.eclipse.egit.core,org.eclipse.egit.ui,org.eclipse.jgit,org.eclipse.jgit.ui
-
-# Install Findbugs
-RUN $ECLIPSE_DIR/run_p2.sh \
-    -repository http://findbugs.cs.umd.edu/eclipse \
-    -installIUs edu.umd.cs.findbugs.plugin.eclipse 
-
-# Install Checkstyle
-RUN $ECLIPSE_DIR/run_p2.sh \
-    -repository http://eclipse-cs.sourceforge.net/update \
-    -installIUs net.sf.eclipsecs.ui 
-
-# Install Database Viewer
-RUN $ECLIPSE_DIR/run_p2.sh \
-    -repository http://www.ne.jp/asahi/zigen/home/plugin/dbviewer/ \
-    -installIUs zigen.plugin.db 
-
-# Install Memory Analyzer
-RUN  $ECLIPSE_DIR/run_p2.sh \
-    -repository http://download.eclipse.org/mat/1.4/update-site/ \
-    -installIUs org.eclipse.mat.ui,org.eclipse.mat.report,org.eclipse.mat.ui.help 
-
-# Install QuickREx (as dropin)
-RUN cd $ECLIPSE_DIR/dropins && curl -L -O http://sourceforge.net/projects/quickrex/files/latest/download/QuickREx_3.5.0.jar
-
+# Install oracle jdks 6,7 and 8
+RUN sudo apt-add-repository ppa:webupd8team/java && \
+    sudo apt-get update && \
+    echo oracle-java6-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections && \
+    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections && \	
+    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections && \
+    sudo apt-get install oracle-java6-installer \
+    	 oracle-java7-installer \
+	 oracle-java8-installer -y
 
 # Install latest gradle
 ENV GRADLE_DOWNLOAD_LINK https://services.gradle.org/distributions/gradle-2.2.1-bin.zip
-RUN curl -L  -o gradle.zip $GRADLE_DOWNLOAD_LINK && \
+RUN curl -L -o gradle.zip $GRADLE_DOWNLOAD_LINK && \
      sudo unzip gradle.zip -d /opt && \
      rm gradle.zip && \
      sudo update-alternatives --install /usr/bin/gradle gradle /opt/gradle*/bin/gradle 100 
 
-###
-### TODO: fix gradle tooling
-###
+# copy eclipse install tools to image
+ENV ECLIPSE_DIR /opt/eclipse
+ENV ECLIPSE_INST_TOOL /opt/eclipse_install_tools/install_eclipse.sh
+ADD eclipse_install_tools/ /opt/eclipse_install_tools/
+RUN sudo chmod 755 $ECLIPSE_INST_TOOL
 
-# Install Eclipse gradle tooling (needs antlr and protobuf-dt)
-#RUN $ECLIPSE_INSTALL_CALL_PREFIX \
-#    -repository http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/ \
-#    -installIUs org.antlr.runtime,org.eclipse.emf.codegen.ecore.xtext\
-#    $ECLIPSE_INSTALL_CALL_POSTFIX
+# Install eclipse
+RUN sudo $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y
+RUN sudo update-alternatives --install /usr/bin/eclipse eclipse /opt/eclipse/eclipse 100 
+
+# Install eclipse plugins and dropins
+RUN sudo $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y -p findbugs
+RUN sudo $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y -p egit
+RUN sudo $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y -p checkstyle
+RUN sudo $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y -p databaseviewer
+RUN sudo $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y -p mat
+RUN sudo $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y -d quickrex
+#RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_DIR -y -e easyshell
 
 
-
-#RUN $ECLIPSE_INSTALL_CALL_PREFIX \
-#    -repository http://protobuf-dt.googlecode.com/git/update-site \
-#    -installIUs com.google.eclipse.protobuf,com.google.eclipse.protobuf.ui \
-#    $ECLIPSE_INSTALL_CALL_POSTFIX
-
-#RUN $ECLIPSE_INSTALL_CALL_PREFIX \
-#    -repository http://dist.springsource.com/release/TOOLS/gradle \
-#    -installIUs org.springframework.ide.eclipse.uaa,org.springsource.ide.eclipse.gradle.ui,org.springsource.ide.eclipse.gradle.ui.taskview \
-#    $ECLIPSE_INSTALL_CALL_POSTFIX
-
+# Eclipse is the default tool to start in this docker container
 CMD $ECLIPSE_DIR/eclipse

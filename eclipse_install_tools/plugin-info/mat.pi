@@ -1,0 +1,3 @@
+REPOSITORY="http://download.eclipse.org/mat/1.4/update-site"
+FEATURES="org.eclipse.mat.ui,org.eclipse.mat.report,org.eclipse.mat.ui.help"
+
