@@ -113,7 +113,7 @@ install_plugin () {
     ECLIPSE_DIR="$1"; shift;
     PLUGIN="$1"; shift;
 
-    PI_FILE="plugin-info/$PLUGIN.pi"
+    PI_FILE="$TOOL_INSTALL_PATH/plugin-info/$PLUGIN.pi"
 
     check_for_file "$PI_FILE" "Plugin info";
 
@@ -131,7 +131,7 @@ install_dropin () {
     ECLIPSE_DIR="$1"; shift;
     DROPIN="$1"; shift;
 
-    DI_FILE="dropin-info/$DROPIN.di"
+    DI_FILE="$TOOL_INSTALL_PATH/dropin-info/$DROPIN.di"
 
     check_for_file "$DI_FILE" "Dropin info";
 
@@ -151,6 +151,7 @@ PLUGIN="";
 DROPIN=""
 ECLIPSE_DIR=""
 ECLIPSE_BASE_DIR=""
+TOOL_INSTALL_PATH=$(dirname $0)
 
 while getopts "h?t:p:d:y" opt; do
     case "$opt" in
