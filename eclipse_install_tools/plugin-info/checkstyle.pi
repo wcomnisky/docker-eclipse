@@ -1,2 +1,2 @@
 REPOSITORY="http://eclipse-cs.sourceforge.net/update"
-FEATURE="net.sf.eclipsecs.ui"
+FEATURES="net.sf.eclipsecs.ui"
