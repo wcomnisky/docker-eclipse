@@ -22,7 +22,7 @@ show_help() {
 show_confirmation() {
     ECLIPSE_BASE_DIR="$1"; shift;
 
-    echo "Create a new eclipse installation in $ECLIPSE_BASE_DIR? [y/N]"
+    echo "Create/Update eclipse installation in $ECLIPSE_BASE_DIR? [y/N]"
     read a
     case $a in
 	y|Y)
@@ -186,7 +186,7 @@ fi
 
 if [ $SHOW_CONFIRMATION -ne 0 ]
 then 
-    show_confirmation;
+    show_confirmation "$ECLIPSE_BASE_DIR";
 fi
 
 if [ $RUN_ECLIPSE_INSTALLATION -ne 0 ]
@@ -195,7 +195,7 @@ then
 else
     if [ ! -z "$PLUGIN" ]
     then
-	install_plugin "$ECLIPSE_DIR" "$PLUGIN"
+	    install_plugin "$ECLIPSE_DIR" "$PLUGIN"
     elif [ ! -z "$DROPIN" ]
     then
 	install_dropin "$ECLIPSE_DIR" "$DROPIN"

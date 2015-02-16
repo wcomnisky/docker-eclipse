@@ -1,0 +1,2 @@
+REPOSITORY=http://download.eclipticalsoftware.com/updates/
+FEATURES=ca.ecliptical.pde,ca.ecliptical.pde.ds,ca.ecliptical.pde.ds.lib
