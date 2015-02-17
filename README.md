@@ -29,7 +29,7 @@ Thanks to the authors :)
  * ant
  * git
 
-## Download and run it 
+## Download the image and create container
 
     sudo docker run -it \
         -v ~/workspace/:/home/developer/workspace/ \
@@ -47,10 +47,17 @@ Thanks to the authors :)
 
     sudo docker build -t eclipse-for-rcp .
    
-    # run the image
+    # run the image to create a container
     sudo docker run -it -v ~/workspace/:/home/developer/workspace/ \
         -e DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         eclipse-for-rcp
 
+## Get container id for subsequent starts
+
+    sudo docker ps -qla
+
+## Subsequent starts 
+
+    sudo docker start -i [container id from "docker ps -qla" command]
      
