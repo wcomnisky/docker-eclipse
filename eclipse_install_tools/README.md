@@ -15,8 +15,7 @@ see the files in the subdirs plugin-info and dropin-info.
         -p -- installs the plugin defined in plugin-info/<plugin name>.pi
         -d -- installs the dropin defined in drop-info/<dropin name>.di
  
- If neigther -p nor -d are passed eclipse base installation is started.
- Only one of -p and -d is allowed, call the script twice to install a plugin and a dropin
+ Several dropins and plugins can be separated by comma.
 ```
 
 ## Example
@@ -24,8 +23,6 @@ see the files in the subdirs plugin-info and dropin-info.
 Install a eclipse with findbugs and checkstyle
 
 ```
-  ./install_eclipse.sh -t /home/tools/luna
-  ./install_eclipse.sh -t /home/tools/luna -p findbugs -y
-  ./install_eclipse.sh -t /home/tools/luna -p checkstyle -y
+  ./install_eclipse.sh -t /home/tools/luna -p findbugs,checkstyle
 
 ```

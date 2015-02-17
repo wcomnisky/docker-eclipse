@@ -1,2 +1,2 @@
-REPOSITORY="http://www.ne.jp/asahi/zigen/home/plugin/dbviewer"
-FEATURES="zigen.plugin.db"
+REPOSITORY=http://www.ne.jp/asahi/zigen/home/plugin/dbviewer
+FEATURES=zigen.plugin.future.feature.group,zigen.plugin.db

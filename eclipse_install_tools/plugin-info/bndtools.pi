@@ -1,0 +1,2 @@
+REPOSITORY=http://dl.bintray.com/bndtools/bndtools/latest/
+FEATURES=bndtools.jarviewer.feature.feature.group,bndtools.main.feature.feature.group,bndtools.release,org.bndtools.headless.build.plugin.ant,org.bndtools.headless.build.plugin.gradle,org.bndtools.versioncontrol.ignores.manager,org.bndtools.versioncontrol.ignores.plugin.git

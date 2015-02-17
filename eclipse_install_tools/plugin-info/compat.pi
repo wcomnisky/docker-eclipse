@@ -1,0 +1,2 @@
+REPOSITORY=http://download.eclipse.org/eclipse/updates/4.4
+FEATURES=org.eclipse.osgi.compatibility.plugins.feature.feature.group

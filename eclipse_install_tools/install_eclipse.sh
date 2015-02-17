@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ECLIPSE_DOWNLOAD_URL="http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/luna/SR1a/eclipse-rcp-luna-SR1a-linux-gtk-x86_64.tar.gz"
-ECLIPSE_P2_START_ARGS="-clean -purgeHistory -application org.eclipse.equinox.p2.director -noSplash"
+ECLIPSE_P2_START_ARGS="-clean -application org.eclipse.equinox.p2.director -noSplash"
 ECLIPSE_VMARGS="-vmargs -Declipse.p2.mirrors=true -Djava.net.preferIPv4Stack=true"
 #!/bin/bash
 
@@ -13,8 +13,6 @@ show_help() {
     echo "\t-p -- installs the plugin defined in plugin-info/<plugin name>.pi"
     echo "\t-d -- installs the dropin defined in drop-info/<dropin name>.di"
     echo " "
-    echo "If neigther -p nor -d are passed eclipse base installation is started."
-    echo "Only one of -p and -d is allowed, call the script twice to install a plugin and a dropin"
     echo " "
     exit 0
 }
@@ -46,14 +44,7 @@ download_eclipse() {
 
 fix_eclipse_classcast_exception() {
     ECLIPSE_DIR="$1"; shift;
-
-    # Fix Eclipse Classcast Exception at startup
-    # see http://stackoverflow.com/questions/26279570/getting-rid-of-org-eclipse-osgi-internal-framework-equinoxconfiguration1-that-c
-    #
-    echo "-Dosgi.configuration.area.default=null" >> $ECLIPSE_DIR/eclipse.ini 
-    echo "-Dosgi.user.area.default=null" >> $ECLIPSE_DIR/eclipse.ini 
-    echo "-Dosgi.user.area=@user.home" >> $ECLIPSE_DIR/eclipse.ini
-    echo "-Dosgi.instance.area.default=null" >> $ECLIPSE_DIR/eclipse.ini    
+    echo "-Dosgi.user.area=@user.home/.eclipse.user.area" >> $ECLIPSE_DIR/eclipse.ini
 }
 
 remove_maxpermsize_from_eclipse_ini() {
@@ -72,8 +63,8 @@ install_eclipse() {
     download_eclipse "$ECLIPSE_BASE_DIR" "$ECLIPSE_DIR"
     if [ -f "$ECLIPSE_DIR" ]
     then
-	echo "Found an existing eclipse installation in \"$ECLIPSE_DIR\" aborting!";
-	exit 1;
+	    echo "Found an existing eclipse installation in \"$ECLIPSE_DIR\" aborting!";
+	    exit 1;
     fi
     fix_eclipse_classcast_exception "$ECLIPSE_DIR"
     remove_maxpermsize_from_eclipse_ini "$ECLIPSE_DIR"
@@ -109,22 +100,31 @@ check_not_empty() {
     fi
 }
 
-install_plugin () {
-    ECLIPSE_DIR="$1"; shift;
-    PLUGIN="$1"; shift;
+install_plugins() {
+   ECLIPSE_DIR="$1"; shift;
+   PLUGINS="$1"; shift;
 
-    PI_FILE="$TOOL_INSTALL_PATH/plugin-info/$PLUGIN.pi"
+   ALL_REPOSITORIES=""
+   ALL_FEATURES=""
+   
+   for PLUGIN in $(echo "$PLUGINS" | sed -e 's/,/ /g')
+   do
+          PI_FILE="$TOOL_INSTALL_PATH/plugin-info/$PLUGIN.pi"
 
-    check_for_file "$PI_FILE" "Plugin info";
+          check_for_file "$PI_FILE" "Plugin info";
 
-    REPOSITORY=""
-    FEATURES=""
-    . "$PI_FILE"
+          REPOSITORY=""
+          FEATURES=""
+          . "$PI_FILE"
 
-    check_not_empty "REPOSITORY" "$REPOSITORY" "$PI_FILE"
-    check_not_empty "FEATURES" "$FEATURES" "$PI_FILE"
+          check_not_empty "REPOSITORY" "$REPOSITORY" "$PI_FILE"
+          check_not_empty "FEATURES" "$FEATURES" "$PI_FILE"
 
-    run_p2 "$ECLIPSE_DIR" -repository "$REPOSITORY" -installIUs "$FEATURES"
+          ALL_REPOSITORIES="${ALL_REPOSITORIES}${REPOSITORY},"
+          ALL_FEATURES="${ALL_FEATURES}${FEATURES},"          
+   done
+
+   run_p2 "$ECLIPSE_DIR" -repository "$ALL_REPOSITORIES" -installIUs "$ALL_FEATURES"
 }
 
 install_dropin () {
@@ -143,10 +143,20 @@ install_dropin () {
     (cd $ECLIPSE_DIR/dropins && curl -L -O "$DROPIN_URL")
 }
 
+install_dropins() {
+   ECLIPSE_DIR="$1"; shift;
+   DROPINS="$1"; shift;
+
+   for DROPIN in $(echo "$DROPINS" | sed -e 's/,/ /g')
+   do
+      install_dropin "$ECLIPSE_DIR" "$DROPIN"
+   done
+}
+
+
 STARTDIR=$(pwd)
 SHOW_CONFIRMATION=1;
 
-RUN_ECLIPSE_INSTALLATION=1
 PLUGIN="";
 DROPIN=""
 ECLIPSE_DIR=""
@@ -163,11 +173,9 @@ while getopts "h?t:p:d:y" opt; do
     t) ECLIPSE_BASE_DIR="$OPTARG";
        ECLIPSE_DIR="$ECLIPSE_BASE_DIR/eclipse"	    
 	;;
-    p) PLUGIN="$OPTARG"
-       RUN_ECLIPSE_INSTALLATION=0;
+    p) PLUGINS="$OPTARG"
        ;;
-    d) DROPIN="$OPTARG"
-       RUN_ECLIPSE_INSTALLATION=0;
+    d) DROPINS="$OPTARG"
        ;;
     esac
 done
@@ -189,19 +197,21 @@ then
     show_confirmation "$ECLIPSE_BASE_DIR";
 fi
 
-if [ $RUN_ECLIPSE_INSTALLATION -ne 0 ]
+if [ -f "$ECLIPSE_DIR/eclipse" ]
 then
-    install_eclipse "$ECLIPSE_BASE_DIR" "$ECLIPSE_DIR"
+   echo "Eclipse is already installed => skipping eclipse installation."
 else
-    if [ ! -z "$PLUGIN" ]
-    then
-	    install_plugin "$ECLIPSE_DIR" "$PLUGIN"
-    elif [ ! -z "$DROPIN" ]
-    then
-	install_dropin "$ECLIPSE_DIR" "$DROPIN"
-    else
-	show_help
-    fi	
+    install_eclipse "$ECLIPSE_BASE_DIR" "$ECLIPSE_DIR"
+fi
+
+if [ ! -z "$PLUGINS" ]
+then
+	install_plugins "$ECLIPSE_DIR" "$PLUGINS"
+fi
+
+if [ ! -z "$DROPINS" ]
+then
+	install_dropins "$ECLIPSE_DIR" "$DROPINS"
 fi
 
 exit 0

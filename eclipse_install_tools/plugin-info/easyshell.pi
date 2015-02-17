@@ -1,2 +1,2 @@
-REPOSITORY="http://pluginbox.sourceforge.net/"
-FEATURES="com.tetrade.eclipse.plugins.easyshell,PluginBox"
+REPOSITORY=http://pluginbox.sourceforge.net/
+FEATURES=PluginBox,com.tetrade.eclipse.plugins.easyshell

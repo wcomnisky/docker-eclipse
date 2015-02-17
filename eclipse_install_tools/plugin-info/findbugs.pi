@@ -1,3 +1,2 @@
-REPOSITORY="http://findbugs.cs.umd.edu/eclipse"
-FEATURES="edu.umd.cs.findbugs.plugin.eclipse"
-
+REPOSITORY=http://findbugs.cs.umd.edu/eclipse
+FEATURES=edu.umd.cs.findbugs.plugin.eclipse.feature.group,edu.umd.cs.findbugs.plugin.eclipse

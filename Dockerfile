@@ -23,7 +23,7 @@ WORKDIR $HOME
 
 # Install missing packages
 RUN sudo apt-get update && \
-    sudo apt-get install libswt-gtk-3-java unzip ant ant-contrib git bash-completion curl software-properties-common wget -y
+    sudo apt-get install libswt-gtk-3-java unzip ant ant-contrib git git-svn bash-completion curl software-properties-common wget -y
 
 # Install oracle jdks 6,7 and 8
 RUN sudo apt-add-repository ppa:webupd8team/java && \
@@ -50,18 +50,8 @@ RUN sudo chmod 755 $ECLIPSE_INST_TOOL
 
 # Install eclipse
 RUN sudo mkdir -p $ECLIPSE_BASE_DIR/eclipse && sudo chown $USERNAME:$USERNAME $ECLIPSE_BASE_DIR/eclipse
-RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y
+RUN $ECLIPSE_INST_TOOL -y -t $ECLIPSE_BASE_DIR -p egit,findbugs,checkstyle,databaseviewer,bndtools,ds_annotation_builder,mat -d quickrex
 RUN sudo update-alternatives --install /usr/bin/eclipse eclipse $ECLIPSE_BASE_DIR/eclipse/eclipse 100 
-
-# Install eclipse plugins and dropins
-RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y -p findbugs
-RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y -p egit
-RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y -p checkstyle
-RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y -p databaseviewer
-RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y -p mat
-RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y -d quickrex
-#RUN $ECLIPSE_INST_TOOL -t $ECLIPSE_BASE_DIR -y -e easyshell
-
 
 # Eclipse is the default tool to start in this docker container
 CMD $ECLIPSE_BASE_DIR/eclipse/eclipse

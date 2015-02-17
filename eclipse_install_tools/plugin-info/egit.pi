@@ -1,2 +1,2 @@
-REPOSITORY="http://download.eclipse.org/releases/luna"
-FEATURES="org.eclipse.egit,org.eclipse.egit.core,org.eclipse.egit.ui,org.eclipse.jgit,org.eclipse.jgit.ui"
+REPOSITORY=http://download.eclipse.org/releases/luna
+FEATURES=org.eclipse.egit,org.eclipse.egit.core,org.eclipse.egit.ui,org.eclipse.jgit,org.eclipse.jgit.ui,org.eclipse.egit.feature.group,org.eclipse.egit.mylyn.feature.group
