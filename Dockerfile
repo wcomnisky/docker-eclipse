@@ -23,8 +23,12 @@ WORKDIR $HOME
 
 # Install missing packages
 RUN sudo apt-get update && \
-    sudo apt-get install libswt-gtk-3-java unzip ant ant-contrib git git-svn bash-completion curl software-properties-common wget -y
-
+    sudo apt-get install libswt-gtk-3-java \
+         unzip ant ant-contrib git git-svn \
+         bash-completion curl software-properties-common wget \
+         maven -y && \
+    sudo apt-get clean
+    
 # Install oracle jdks 6,7 and 8
 RUN sudo apt-add-repository ppa:webupd8team/java && \
     sudo apt-get update && \
@@ -33,10 +37,11 @@ RUN sudo apt-add-repository ppa:webupd8team/java && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections && \
     sudo apt-get install oracle-java6-installer \
     	 oracle-java7-installer \
-	 oracle-java8-installer -y
+	 oracle-java8-installer -y && \
+    sudo apt-get clean
 
 # Install latest gradle
-ENV GRADLE_DOWNLOAD_LINK https://services.gradle.org/distributions/gradle-2.2.1-bin.zip
+ENV GRADLE_DOWNLOAD_LINK https://services.gradle.org/distributions/gradle-2.4-all.zip
 RUN curl -L -o gradle.zip $GRADLE_DOWNLOAD_LINK && \
      sudo unzip gradle.zip -d /opt && \
      rm gradle.zip && \
