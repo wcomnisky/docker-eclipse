@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ECLIPSE_DOWNLOAD_URL="http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/luna/SR1a/eclipse-rcp-luna-SR1a-linux-gtk-x86_64.tar.gz"
+ECLIPSE_DOWNLOAD_URL="http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/mars/R/eclipse-java-mars-R-linux-gtk-x86_64.tar.gz"
 ECLIPSE_P2_START_ARGS="-clean -application org.eclipse.equinox.p2.director -noSplash"
 ECLIPSE_VMARGS="-vmargs -Declipse.p2.mirrors=true -Djava.net.preferIPv4Stack=true"
 #!/bin/bash

@@ -12,7 +12,7 @@ Thanks to the authors :)
 
 ## What's installed?
 
-* Eclipse Lunar SR1 for RCP and RAP developers
+* Eclipse Mars (or Luna - depends on tag) for RCP and RAP developers
 
 ### Plugins
 
@@ -31,12 +31,16 @@ Thanks to the authors :)
 
 ## Download the image and create container
 
-    sudo docker run -it \
+    docker run -it \
+        --name eclipse \
         -v ~/workspace/:/home/developer/workspace/ \
         -e DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         joemat/docker-eclipse-for-rcp
 
+The `-v` parameter binds the directory `workspace` to `/home/developer/workspace` wihtin in the cotainer. You may want to adjust this parameter.
+
+If the UI does not come up try to call `xhost + localhost` before starting the container. 
 
 ## Build the image from Dockerfile
 
@@ -45,19 +49,26 @@ Thanks to the authors :)
    
     # (optional: adjust UID, GUI and User in Dockerfile)
 
-    sudo docker build -t eclipse-for-rcp .
+    docker build -t eclipse-for-rcp .
    
     # run the image to create a container
-    sudo docker run -it -v ~/workspace/:/home/developer/workspace/ \
+    docker run -it \
+		--name eclipse \
+	    -v ~/workspace/:/home/developer/workspace/ \
         -e DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
-        eclipse-for-rcp
-
-## Get container id for subsequent starts
-
-    sudo docker ps -qla
+        docker-eclipse-for-rcp
 
 ## Subsequent starts 
 
-    sudo docker start -i [container id from "docker ps -qla" command]
-     
+    docker start eclipse
+
+The container is stopped when Eclipse is shut down.
+
+## Get a shell within a running container
+
+To get a shell within the running container (e.g. for running `gradle` or `mvn`from the commandline) call:
+
+    docker exec -ti -u developer eclipse bash 
+
+
