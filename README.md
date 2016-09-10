@@ -40,7 +40,14 @@ Thanks to the authors :)
 
 The `-v` parameter binds the directory `workspace` to `/home/developer/workspace` wihtin in the cotainer. You may want to adjust this parameter.
 
-If the UI does not come up try to call `xhost + localhost` before starting the container. 
+## Troubleshooting
+
+If the UI does not come up and the following message appears:
+
+    No protocol specified
+    Eclipse: Cannot open display:
+
+Try to call `xhost +local:` before starting the container. (Because the X server connection uses a local socket `/tmp/.X11-unix` and such direct access is disabled.)
 
 ## Build the image from Dockerfile
 
