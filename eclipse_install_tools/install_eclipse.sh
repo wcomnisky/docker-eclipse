@@ -1,6 +1,7 @@
 #!/bin/bash
 
-ECLIPSE_DOWNLOAD_URL="http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/mars/R/eclipse-java-mars-R-linux-gtk-x86_64.tar.gz"
+ECLIPSE_DOWNLOAD_FILE="eclipse-java-neon-R-linux-gtk-x86_64.tar.gz"
+ECLIPSE_DOWNLOAD_URL="http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/neon/R/$ECLIPSE_DOWNLOAD_FILE"
 ECLIPSE_P2_START_ARGS="-clean -application org.eclipse.equinox.p2.director -noSplash"
 ECLIPSE_VMARGS="-vmargs -Declipse.p2.mirrors=true -Djava.net.preferIPv4Stack=true"
 #!/bin/bash
@@ -39,6 +40,10 @@ download_eclipse() {
 
     # Download Eclipse for RCP and RAP developers
     mkdir -p $(dirname $ECLIPSE_DIR)
+    cd $(dirname $ECLIPSE_DIR)
+	wget -O $ECLIPSE_DOWNLOAD_FILE $ECLIPSE_DOWNLOAD_URL
+	wget -O $ECLIPSE_DOWNLOAD_FILE.sha512 $ECLIPSE_DOWNLOAD_URL.sha512
+	sha512sum $ECLIPSE_DOWNLOAD_FILE.sha512
     curl "$ECLIPSE_DOWNLOAD_URL" | tar -C "$ECLIPSE_BASE_DIR" -xvz
 }
 
