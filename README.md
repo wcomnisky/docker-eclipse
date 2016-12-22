@@ -51,12 +51,12 @@ Try to call `xhost +local:` before starting the container. (Because the X server
 
 ## Build the image from Dockerfile
 
-    git clone https://github.com/joemat/docker-eclipse-for-rcp.git
-    cd docker-eclpse-for-rcp
+    git clone https://github.com/guedressel/docker-eclipse.git
+    cd docker-eclipse
    
     # (optional: adjust UID, GUI and User in Dockerfile)
 
-    docker build -t eclipse-for-rcp .
+    docker build -t docker-eclipse .
    
     # run the image to create a container
     docker run -it \
@@ -64,7 +64,7 @@ Try to call `xhost +local:` before starting the container. (Because the X server
 	    -v ~/workspace/:/home/developer/workspace/ \
         -e DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
-        docker-eclipse-for-rcp
+        docker-eclipse
 
 ## Subsequent starts 
 
