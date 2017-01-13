@@ -12,7 +12,7 @@ Thanks to the authors :)
 
 ## What's installed?
 
-* Eclipse Lunar SR1 for RCP and RAP developers
+* Eclipse Luna SR2 for RCP and RAP developers
 
 ### Plugins
 
@@ -21,6 +21,8 @@ Thanks to the authors :)
  * Database Viewer
  * Memory Analyzer
  * QuickREx
+ * M2Eclipse (Tycho)
+ * E(fx)clipse
  
 ### Tools (command line, use e.g. in wicket shell)
 
@@ -29,35 +31,22 @@ Thanks to the authors :)
  * ant
  * git
 
-## Download the image and create container
-
-    sudo docker run -it \
-        -v ~/workspace/:/home/developer/workspace/ \
-        -e DISPLAY \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
-        joemat/docker-eclipse-for-rcp
-
-
 ## Build the image from Dockerfile
 
-    git clone https://github.com/joemat/docker-eclipse-for-rcp.git
-    cd docker-eclpse-for-rcp
+    git clone https://github.com/guedressel/docker-eclipse.git
+    cd docker-eclipse
    
     # (optional: adjust UID, GUI and User in Dockerfile)
 
-    sudo docker build -t eclipse-for-rcp .
+    sudo docker build -t eclipse-rcp:luna .
    
     # run the image to create a container
-    sudo docker run -it -v ~/workspace/:/home/developer/workspace/ \
+    sudo docker run -it --name eclipse-rcp-luna \
+        -v ~/workspace/:/home/developer/workspace/ \
         -e DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
-        eclipse-for-rcp
-
-## Get container id for subsequent starts
-
-    sudo docker ps -qla
+        eclipse-rcp:luna
 
 ## Subsequent starts 
 
-    sudo docker start -i [container id from "docker ps -qla" command]
-     
+    sudo docker start -ia eclipse-rcp-luna     
