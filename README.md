@@ -24,12 +24,12 @@ Thanks to the authors :)
  * M2Eclipse (Tycho)
  * E(fx)clipse
  
-### Tools (command line, use e.g. in wicket shell)
+### Tools (command line, use e.g. in Wicket Shell)
 
- * Oracle JDKs 6,7 and 8
- * gradle
- * ant
- * git
+ * Oracle JDKs 6, 7 and 8
+ * Gradle
+ * Ant
+ * Git
 
 ## Build the image from Dockerfile
 
@@ -38,15 +38,16 @@ Thanks to the authors :)
    
     # (optional: adjust UID, GUI and User in Dockerfile)
 
-    sudo docker build -t eclipse-rcp:luna .
+    docker build -t eclipse-rcp:luna .
    
     # run the image to create a container
-    sudo docker run -it --name eclipse-rcp-luna \
-        -v ~/workspace/:/home/developer/workspace/ \
+    docker run -it \
+	--name eclipse-rcp-luna \
+	-v ~/workspace/:/home/developer/workspace/ \
         -e DISPLAY \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         eclipse-rcp:luna
 
 ## Subsequent starts 
 
-    sudo docker start -ia eclipse-rcp-luna     
+    docker start -ia eclipse-rcp-luna
