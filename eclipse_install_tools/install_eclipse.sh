@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ECLIPSE_DOWNLOAD_FILE="eclipse-java-neon-R-linux-gtk-x86_64.tar.gz"
-ECLIPSE_DOWNLOAD_URL="http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/neon/R/$ECLIPSE_DOWNLOAD_FILE"
+ECLIPSE_DOWNLOAD_FILE="eclipse-rcp-neon-2-linux-gtk-x86_64.tar.gz"
+ECLIPSE_DOWNLOAD_URL="http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/technology/epp/downloads/release/neon/2/$ECLIPSE_DOWNLOAD_FILE"
 ECLIPSE_P2_START_ARGS="-clean -application org.eclipse.equinox.p2.director -noSplash"
 ECLIPSE_VMARGS="-vmargs -Declipse.p2.mirrors=true -Djava.net.preferIPv4Stack=true"
 #!/bin/bash
@@ -10,9 +10,9 @@ show_help() {
     echo " "
     echo "Usage: $0 -t <installation dir> [-y] [-p <plugin name>] [-d <dropin name>]"
     echo " "
-    echo "\t-y -- don't show the confirmation dialog"
-    echo "\t-p -- installs the plugin defined in plugin-info/<plugin name>.pi"
-    echo "\t-d -- installs the dropin defined in drop-info/<dropin name>.di"
+    echo -e "\t-y -- don't show the confirmation dialog"
+    echo -e "\t-p -- installs the plugin defined in plugin-info/<plugin name>.pi"
+    echo -e "\t-d -- installs the dropin defined in drop-info/<dropin name>.di"
     echo " "
     echo " "
     exit 0

@@ -1,0 +1,2 @@
+REPOSITORY=http://download.eclipse.org/efxclipse/updates-released/1.2.0/site/
+FEATURES=org.eclipse.fx.ide.feature.feature.group,org.eclipse.fx.ide.basic.feature.feature.group,org.eclipse.fx.ide.converter.feature.feature.group,org.eclipse.fx.ide.css.feature.feature.group,org.eclipse.fx.ide.fxgraph.feature.feature.group,org.eclipse.fx.ide.fxml.feature.feature.group,org.eclipse.fx.ide.l10n.feature.feature.group,org.eclipse.fx.ide.pde.feature.feature.group,org.eclipse.fx.ide.rrobot.feature.feature.group
