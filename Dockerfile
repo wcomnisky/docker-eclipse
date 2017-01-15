@@ -57,7 +57,7 @@ RUN chmod 755 $ECLIPSE_INST_TOOL
 
 # Install eclipse
 RUN mkdir -p $ECLIPSE_BASE_DIR/eclipse && chown $USERNAME:$USERNAME $ECLIPSE_BASE_DIR/eclipse
-RUN $ECLIPSE_INST_TOOL -y -t $ECLIPSE_BASE_DIR -p egit,findbugs,checkstyle,databaseviewer,bndtools,ds_annotation_builder,mat,efxclipse,m2eclipse-tycho -d quickrex
+RUN $ECLIPSE_INST_TOOL -y -t $ECLIPSE_BASE_DIR -p egit,efxclipse,m2eclipse-tycho
 RUN update-alternatives --install /usr/bin/eclipse eclipse $ECLIPSE_BASE_DIR/eclipse/eclipse 100 
 
 USER $USERNAME
